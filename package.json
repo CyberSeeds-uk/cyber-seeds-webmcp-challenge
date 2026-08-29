@@ -1,0 +1,8 @@
+{
+  "name": "cyber-seeds-webmcp-challenge",
+  "private": true,
+  "scripts": {
+    "test": "node tests/conformance.test.js",
+    "check": "node --check app.js && node --check demo-data.js && node --check webmcp.js"
+  }
+}

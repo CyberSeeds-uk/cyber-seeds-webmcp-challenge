@@ -1,0 +1,229 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+
+  <meta
+    name="referrer"
+    content="no-referrer"
+  >
+
+  <title>
+    Cyber Seeds — Human-Authorised Agentic Safety
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="./styles.css"
+  >
+</head>
+
+<body>
+
+<header class="hero">
+
+  <p class="eyebrow">
+    OPENAI WEBMCP CHALLENGE · SYNTHETIC DEMONSTRATION
+  </p>
+
+  <h1>
+    Human-authorised agentic safety
+    for the digital home.
+  </h1>
+
+  <p class="intro">
+    Cyber Seeds explores how humans and AI agents can
+    work together on household digital safety without
+    silently transferring authority to the agent.
+  </p>
+
+  <div
+    id="webmcp-status"
+    class="webmcp-status"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    Checking WebMCP…
+  </div>
+
+</header>
+
+
+<main>
+
+<section class="panel">
+
+  <div class="section-heading">
+    <div>
+      <p class="label">SYNTHETIC HOUSEHOLD</p>
+      <h2>Digital safety signals</h2>
+    </div>
+  </div>
+
+  <p>
+    These scenarios are fictional and exist only
+    to demonstrate the WebMCP interaction model.
+  </p>
+
+  <div
+    id="issues"
+    class="issues"
+  ></div>
+
+</section>
+
+
+<section class="panel gate-panel">
+
+  <p class="label">
+    AUTHORITY BOUNDARY
+  </p>
+
+  <h2>
+    Human approval gate
+  </h2>
+
+  <p
+    id="gate-state"
+    class="gate-state"
+    aria-live="polite"
+    aria-atomic="true"
+  ></p>
+
+  <code
+    id="gate-detail"
+    class="gate-detail"
+  ></code>
+
+  <div class="actions">
+
+    <button
+      id="approve"
+      type="button"
+      disabled
+    >
+      Approve this action
+    </button>
+
+    <button
+      id="revoke"
+      type="button"
+      class="secondary"
+      disabled
+    >
+      Revoke approval
+    </button>
+
+  </div>
+
+  <p class="boundary-note">
+    Approval is action-scoped, request-scoped,
+    single-use and expires after two minutes.
+    No WebMCP tool can grant approval.
+  </p>
+
+</section>
+
+
+<section class="panel flow-panel">
+
+  <p class="label">
+    HUMAN + AGENT
+  </p>
+
+  <h2>
+    The interaction
+  </h2>
+
+<pre>
+Agent attempts sensitive change
+             │
+             ▼
+      WebMCP authority gate
+             │
+       approval absent
+             │
+             ▼
+        ACTION REFUSED
+             │
+             ▼
+     human sees request
+             │
+             ▼
+    "Approve this action"
+             │
+             ▼
+       agent retries
+             │
+             ▼
+    exact approval checked
+             │
+             ▼
+        ACTION ALLOWED
+</pre>
+
+</section>
+
+
+<section class="panel">
+
+  <div class="audit-heading">
+    <div>
+      <p class="label">
+        TRANSPARENCY
+      </p>
+
+      <h2>
+        Visible audit trail
+      </h2>
+    </div>
+
+    <button
+      id="reset"
+      type="button"
+      class="secondary"
+    >
+      Reset demo
+    </button>
+  </div>
+
+  <ol
+    id="audit"
+    class="audit"
+    aria-live="polite"
+    aria-label="Synthetic authority event log"
+  ></ol>
+
+</section>
+
+
+<section class="disclosure">
+
+  <strong>
+    Challenge boundary:
+  </strong>
+
+  This prototype contains synthetic demonstration
+  logic only. It does not contain the Cyber Seeds
+  production platform, proprietary assessment
+  methodology, private household data, operational
+  safeguarding systems or production decision logic.
+
+</section>
+
+</main>
+
+
+<script src="./demo-data.js"></script>
+<script src="./app.js"></script>
+<script src="./webmcp.js"></script>
+
+</body>
+</html>
