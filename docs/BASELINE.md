@@ -24,3 +24,14 @@ dc47be3b82715453211f8241a2913fbf39c39a4c5f0bb7a8d155405c37fa9b2b  styles.css
 5468fbdf18684995cb1e844a694ba6b974bccdd86e7a9e603a12f0cf6d2b7542  webmcp.js
 449f4148b1b90d1bd4589a0d32ceba26c3ab80517bf199339cbcc5a9a1dbbcf6  webmcp.js.pre-chrome149-fix
 ```
+
+
+
+### Historical pre-hardening artifact
+
+The original baseline also contained
+`webmcp.js.pre-chrome149-fix`, an internal development snapshot used
+while adapting the prototype for Chrome 149 compatibility.
+
+It was not referenced by the runtime and was removed before public
+release in commit `d02422e` as repository hygiene.
