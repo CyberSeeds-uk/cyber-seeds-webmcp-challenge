@@ -2,9 +2,9 @@
 
 ## Candidate
 
-- Commit: `19a2960851ac6902ee546961979967b01e108d25`
+- Tested source commit: `b73c2ac2bebe5be3f2f85a33c584d71b41b9bda8`
 - Recorded: 2026-08-29
-- Clean clone: `/tmp/cyber-seeds-webmcp-judge-acceptance`
+- Clean clone: `/tmp/cyber-seeds-webmcp-judge-acceptance-final`
 - Publication: not published, pushed, or deployed
 
 ## Automated and source checks
@@ -17,7 +17,7 @@
 
 ## WebMCP evidence
 
-The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. The installed browser reports Chrome `149.0.7827.114`, but this headless/container invocation exposed neither `navigator.modelContext` nor `navigator.modelContextTesting`. Therefore live `listTools()` / `getTools()` evidence and a physical WebMCP judge walkthrough remain unverified in this environment.
+The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. The installed browser reports Chrome `149.0.7827.114`, but this headless/container invocation exposed neither `navigator.modelContext` nor `navigator.modelContextTesting`. Therefore live `listTools()` / `getTools()` evidence and a physical WebMCP judge walkthrough remain unverified in this environment. The final documentation-only commit follows the tested source commit above.
 
 ## Visual evidence
 
