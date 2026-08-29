@@ -9,3 +9,5 @@ Before this interaction model, an assistant would need an ambiguous handoff or a
 Implementation is intentionally compact: static HTML/CSS/JavaScript, synthetic in-memory state, three WebMCP registrations, strict object schemas, request/action binding, expiry, revocation, single-use consumption, duplicate-registration protection, and a visible evidence stream. There is no approval WebMCP tool. The project includes a dependency-free 27-case adversarial conformance battery and documents the client-only limitations honestly.
 
 The central principle is: agents can request authority; they cannot manufacture it.
+
+The public deployment was also accepted in ChatGPT’s built-in browser: ChatGPT discovered the three Site Tools, observed the initial idle state, received a fail-closed refusal and request ID, waited for approval in the visible Cyber Seeds page, completed the exact approved retry, and confirmed that replay produced no change. This live evidence is recorded in [docs/CHATGPT_SITE_TOOLS_ACCEPTANCE.md](docs/CHATGPT_SITE_TOOLS_ACCEPTANCE.md). It demonstrates the capsule’s interaction boundary, not physical human identity or production-grade authorisation.

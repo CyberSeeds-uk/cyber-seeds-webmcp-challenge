@@ -36,4 +36,6 @@ Registration prefers `document.modelContext` and falls back to `navigator.modelC
 
 This is not production security. Authority is held in browser memory, refresh resets the demo, tabs are independent, and a local user with DevTools can alter the page. Production enforcement would require a server-side authority service and a genuine human identity boundary. The demo does not claim to prove either.
 
-Status: submission-grade local challenge capsule; not published, pushed, or deployed.
+Status: submission-grade challenge capsule. The public deployment has passed genuine live ChatGPT WebMCP acceptance; application behaviour is frozen for submission.
+
+Live acceptance evidence: [docs/CHATGPT_SITE_TOOLS_ACCEPTANCE.md](docs/CHATGPT_SITE_TOOLS_ACCEPTANCE.md).

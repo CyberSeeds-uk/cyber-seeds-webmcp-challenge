@@ -2,22 +2,21 @@
 
 ## Candidate
 
-- Tested source commit: `b73c2ac2bebe5be3f2f85a33c584d71b41b9bda8`
+- Application source baseline: `8c041c7`
 - Recorded: 2026-08-29
-- Clean clone: `/tmp/cyber-seeds-webmcp-judge-acceptance-final`
-- Publication: not published, pushed, or deployed
+- Public deployment: https://cyber-seeds-webmcp-challenge.pages.dev/
+- Live ChatGPT acceptance: PASS; see [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md)
 
 ## Automated and source checks
 
 - Clean clone contains only expected public challenge files: PASS.
 - `npm test`: 27 passed, 0 failed: PASS.
-- `npm run check`: JavaScript syntax passed: PASS.
-- HTTP server from clone: page, `app.js`, and `webmcp.js` returned HTTP 200: PASS.
+- `node --check app.js`, `node --check webmcp.js`, and `node --check demo-data.js`: PASS.
 - No remotes, symlinks into private repositories, secrets, real household data, or external runtime scripts: PASS.
 
 ## WebMCP evidence
 
-The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. The installed browser reports Chrome `149.0.7827.114`, but this headless/container invocation exposed neither `navigator.modelContext` nor `navigator.modelContextTesting`. Therefore live `listTools()` / `getTools()` evidence and a physical WebMCP judge walkthrough remain unverified in this environment. The final documentation-only commit follows the tested source commit above.
+The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. A genuine ChatGPT built-in browser session discovered exactly the three public Site Tools, completed the fail-closed request, visible human approval, exact retry, and single-use replay checks documented in [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md).
 
 ## Visual evidence
 
@@ -30,7 +29,9 @@ The page loaded and rendered at 320 CSS px in headless Chrome with the expected 
 - IP boundary: PASS.
 - Client-only limitations documented: PASS.
 
-## Outstanding release blockers
+## Security and release boundary
 
-1. Run the clean-clone walkthrough in a stable WebMCP-enabled Chrome 149+ session and capture `navigator.modelContextTesting.listTools()` plus producer annotations.
-2. Run genuine browser visual acceptance at 390px, 768px, desktop, and 200% zoom, including keyboard-only navigation and overflow checks.
+- The public-source IP firewall remains intact: only the isolated challenge repository is in scope.
+- The capsule contains synthetic household data only and has no secrets, credentials, private Cyber Seeds dependency, or new external dependency.
+- Live acceptance verifies this challenge capsule’s browser interaction. It does not establish physical human identity or production-grade authorisation.
+- Application behaviour is frozen for submission; remaining work is limited to Devpost/submission packaging.
