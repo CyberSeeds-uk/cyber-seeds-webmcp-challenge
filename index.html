@@ -1,229 +1,75 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
-  >
-
-  <meta
-    name="referrer"
-    content="no-referrer"
-  >
-
-  <title>
-    Cyber Seeds — Human-Authorised Agentic Safety
-  </title>
-
-  <link
-    rel="stylesheet"
-    href="./styles.css"
-  >
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Cyber Seeds — Human-Authorised Agentic Safety</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
-
-<header class="hero">
-
-  <p class="eyebrow">
-    OPENAI WEBMCP CHALLENGE · SYNTHETIC DEMONSTRATION
-  </p>
-
-  <h1>
-    Human-authorised agentic safety
-    for the digital home.
-  </h1>
-
-  <p class="intro">
-    Cyber Seeds explores how humans and AI agents can
-    work together on household digital safety without
-    silently transferring authority to the agent.
-  </p>
-
-  <div
-    id="webmcp-status"
-    class="webmcp-status"
-    role="status"
-    aria-live="polite"
-    aria-atomic="true"
-  >
-    Checking WebMCP…
-  </div>
-
-</header>
-
-
-<main>
-
-<section class="panel">
-
-  <div class="section-heading">
-    <div>
-      <p class="label">SYNTHETIC HOUSEHOLD</p>
-      <h2>Digital safety signals</h2>
+  <header class="hero">
+    <div class="hero-brand"><span class="seed-mark" aria-hidden="true">✳</span><span>CYBER SEEDS</span></div>
+    <p class="eyebrow">OPENAI WEBMCP CHALLENGE <span>·</span> SYNTHETIC HOUSEHOLD</p>
+    <div class="hero-grid">
+      <div>
+        <p class="kicker">Human-first digital safety</p>
+        <h1>Human-authorised<br>agentic safety<br><em>for the digital home.</em></h1>
+        <p class="intro">An AI agent can inspect, understand and request. The human retains authority over consequential change.</p>
+        <div class="hero-notes"><span><i aria-hidden="true">◌</i> Synthetic challenge data</span><span><i aria-hidden="true">⌁</i> No tracking</span></div>
+      </div>
+      <aside class="hero-aside" aria-label="Core proposition">
+        <p class="label">THE BOUNDARY</p>
+        <p class="pullquote">Capability is not<br><strong>authority.</strong></p>
+        <p>Agents may discover and ask. Only a person can authorise a sensitive action — and that permission is bounded, visible and consumed.</p>
+      </aside>
     </div>
-  </div>
+    <div id="webmcp-status" class="webmcp-status" role="status" aria-live="polite" aria-atomic="true">Checking WebMCP…</div>
+  </header>
 
-  <p>
-    These scenarios are fictional and exist only
-    to demonstrate the WebMCP interaction model.
-  </p>
+  <main>
+    <section class="capability-strip" aria-labelledby="capability-title">
+      <div class="capability-intro"><p class="label">LIVE CAPABILITY SURFACE</p><h2 id="capability-title">WebMCP is ready.</h2><p>Three deliberate capabilities. Two can read. One can request a controlled change.</p></div>
+      <div class="capability-count"><strong>3</strong><span>capabilities</span><small><b>2</b> read only&nbsp;&nbsp; <b>1</b> human-authorised</small></div>
+      <ul class="tool-list" aria-label="Registered WebMCP tools">
+        <li><span class="tool-icon read" aria-hidden="true">⌕</span><span><strong>inspect_demo_household</strong><small>READ ONLY · household state</small></span><b>READ</b></li>
+        <li><span class="tool-icon read" aria-hidden="true">⌕</span><span><strong>get_approval_state</strong><small>READ ONLY · authority status</small></span><b>READ</b></li>
+        <li><span class="tool-icon action" aria-hidden="true">↗</span><span><strong>perform_sensitive_change</strong><small>CONTROLLED ACTION · human gate</small></span><b>ACTION</b></li>
+      </ul>
+    </section>
 
-  <div
-    id="issues"
-    class="issues"
-  ></div>
+    <section class="panel household-panel" aria-labelledby="household-title">
+      <div class="section-heading"><div><p class="label">SYNTHETIC HOUSEHOLD / SYNTH-HH-001</p><h2 id="household-title">A small domestic cyber ecology</h2></div><span class="section-badge">FICTIONAL STATE</span></div>
+      <p class="section-lede">A calm view of the signals an agent may inspect. Read-only observations never change the household.</p>
+      <div id="issues" class="issues"></div>
+    </section>
 
-</section>
+    <section class="panel gate-panel" aria-labelledby="gate-title">
+      <div class="gate-header"><div><p class="label">AUTHORITY BOUNDARY / VISUAL CENTRE</p><h2 id="gate-title">The human approval gate</h2></div><span class="gate-lock" aria-hidden="true">⌁</span></div>
+      <div class="gate-content">
+        <div class="phase-block"><span class="phase-caption">CURRENT AUTHORITY PHASE</span><p id="gate-phase" class="phase-value">IDLE</p><p id="gate-state" class="gate-state" aria-live="polite" aria-atomic="true"></p></div>
+        <div class="request-card"><span class="phase-caption">REQUEST CONTEXT</span><code id="gate-detail" class="gate-detail"></code><p class="request-boundary">Approval applies to this exact action and request only.</p></div>
+      </div>
+      <div class="authority-callout"><strong>The agent cannot approve itself.</strong><span>Human intent is the missing step between capability and consequence.</span></div>
+      <div class="actions"><button id="approve" type="button" disabled>Approve this action <span aria-hidden="true">→</span></button><button id="revoke" type="button" class="secondary" disabled>Revoke approval</button></div>
+      <p class="boundary-note">Approval is action-scoped, request-scoped, single-use and expires after two minutes. No WebMCP tool can grant approval.</p>
+    </section>
 
+    <section class="contract-section" aria-labelledby="contract-title">
+      <div><p class="label">THE AUTHORITY CONTRACT</p><h2 id="contract-title">A clear division of responsibility.</h2><p class="section-lede">The agent brings context and precision. The human keeps the decision.</p></div>
+      <div class="contract-grid">
+        <article class="contract-card may"><h3><span aria-hidden="true">+</span> Agent may</h3><ul><li>Inspect permitted household state</li><li>Understand available actions</li><li>Request consequential change</li><li>Retry an explicitly authorised request</li></ul></article>
+        <article class="contract-card controls"><h3><span aria-hidden="true">◆</span> Human controls</h3><ul><li>Consequential authority</li><li>Approval and revocation</li><li>Whether the action proceeds</li></ul></article>
+        <article class="contract-card may-not"><h3><span aria-hidden="true">×</span> Agent may not</h3><ul><li>Approve itself</li><li>Convert capability into authority</li><li>Reuse consumed approval</li><li>Apply one request’s authority to another</li></ul></article>
+      </div>
+    </section>
 
-<section class="panel gate-panel">
+    <section class="panel flow-panel" aria-labelledby="flow-title"><div class="section-heading"><div><p class="label">FROM REQUEST TO RESULT</p><h2 id="flow-title">Authority in motion</h2></div><span class="section-badge">FAIL-CLOSED BY DESIGN</span></div><div class="flow" aria-label="Interaction sequence"><div><span>01</span><strong>Agent requests</strong><small>Capability is discovered</small></div><i aria-hidden="true">↓</i><div><span>02</span><strong>System checks</strong><small>Exact authority is required</small></div><i aria-hidden="true">↓</i><div class="flow-refuse"><span>03</span><strong>Action refused</strong><small>Human decision is needed</small></div><i aria-hidden="true">↓</i><div class="flow-human"><span>04</span><strong>Human approves</strong><small>One bounded request</small></div><i aria-hidden="true">↓</i><div><span>05</span><strong>Agent retries</strong><small>Exact request is checked</small></div><i aria-hidden="true">↓</i><div class="flow-allowed"><span>06</span><strong>Allowed · consumed</strong><small>Authority cannot be reused</small></div></div></section>
 
-  <p class="label">
-    AUTHORITY BOUNDARY
-  </p>
+    <section class="panel ledger-panel" aria-labelledby="ledger-title"><div class="audit-heading"><div><p class="label">TRANSPARENCY / LIVE RECORD</p><h2 id="ledger-title">Authority ledger</h2><p class="section-lede">A human-readable record of genuine application events. Nothing is hidden behind the interface.</p></div><button id="reset" type="button" class="secondary">Reset demo</button></div><ol id="audit" class="audit" aria-live="polite" aria-label="Synthetic authority event log"></ol></section>
 
-  <h2>
-    Human approval gate
-  </h2>
-
-  <p
-    id="gate-state"
-    class="gate-state"
-    aria-live="polite"
-    aria-atomic="true"
-  ></p>
-
-  <code
-    id="gate-detail"
-    class="gate-detail"
-  ></code>
-
-  <div class="actions">
-
-    <button
-      id="approve"
-      type="button"
-      disabled
-    >
-      Approve this action
-    </button>
-
-    <button
-      id="revoke"
-      type="button"
-      class="secondary"
-      disabled
-    >
-      Revoke approval
-    </button>
-
-  </div>
-
-  <p class="boundary-note">
-    Approval is action-scoped, request-scoped,
-    single-use and expires after two minutes.
-    No WebMCP tool can grant approval.
-  </p>
-
-</section>
-
-
-<section class="panel flow-panel">
-
-  <p class="label">
-    HUMAN + AGENT
-  </p>
-
-  <h2>
-    The interaction
-  </h2>
-
-<pre>
-Agent attempts sensitive change
-             │
-             ▼
-      WebMCP authority gate
-             │
-       approval absent
-             │
-             ▼
-        ACTION REFUSED
-             │
-             ▼
-     human sees request
-             │
-             ▼
-    "Approve this action"
-             │
-             ▼
-       agent retries
-             │
-             ▼
-    exact approval checked
-             │
-             ▼
-        ACTION ALLOWED
-</pre>
-
-</section>
-
-
-<section class="panel">
-
-  <div class="audit-heading">
-    <div>
-      <p class="label">
-        TRANSPARENCY
-      </p>
-
-      <h2>
-        Visible audit trail
-      </h2>
-    </div>
-
-    <button
-      id="reset"
-      type="button"
-      class="secondary"
-    >
-      Reset demo
-    </button>
-  </div>
-
-  <ol
-    id="audit"
-    class="audit"
-    aria-live="polite"
-    aria-label="Synthetic authority event log"
-  ></ol>
-
-</section>
-
-
-<section class="disclosure">
-
-  <strong>
-    Challenge boundary:
-  </strong>
-
-  This prototype contains synthetic demonstration
-  logic only. It does not contain the Cyber Seeds
-  production platform, proprietary assessment
-  methodology, private household data, operational
-  safeguarding systems or production decision logic.
-
-</section>
-
-</main>
-
-
-<script src="./demo-data.js"></script>
-<script src="./app.js"></script>
-<script src="./webmcp.js"></script>
-
+    <footer class="disclosure"><div><span class="seed-mark small" aria-hidden="true">✳</span><strong>CYBER SEEDS</strong></div><p>Synthetic challenge household. No real household data, production code or proprietary assessment methodology is included. This is not a production authorisation system.</p><a href="./IP_BOUNDARY.md">Read the IP boundary</a></footer>
+  </main>
+  <script src="./demo-data.js"></script><script src="./app.js"></script><script src="./webmcp.js"></script>
 </body>
 </html>

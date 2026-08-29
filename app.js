@@ -383,6 +383,7 @@
         const article = document.createElement("article");
 
         article.className = "issue-card";
+        article.dataset.sensitivity = issue.sensitivity;
 
         article.innerHTML = `
           <div class="issue-topline">
@@ -392,13 +393,16 @@
 
           <h3>${issue.title}</h3>
 
-          <p>
-            ${issue.area} · ${issue.action}
-          </p>
+          <p>${issue.area}</p>
 
           <small>
             ${issue.rationale}
           </small>
+
+          <div class="issue-foot">
+            <span>${issue.sensitivity === "sensitive" ? "Human approval" : "Read only"}</span>
+            <span>${issue.action}</span>
+          </div>
         `;
 
         return article;
@@ -415,11 +419,20 @@
     const approval = getApprovalState();
 
     byId("gate-state").textContent =
-      !pending
-        ? "No sensitive action is pending."
-        : approval.approved
-          ? "Human approval granted. Agent may retry the exact request."
-          : "Action refused. Human approval required.";
+      state.phase === "RESOLVED"
+        ? "Action completed. Authority consumed. No reusable approval remains."
+        : state.phase === "REVOKED"
+          ? "Human approval withdrawn. The action remains refused."
+          : state.phase === "EXPIRED"
+            ? "Approval expired. The action remains refused."
+            : !pending
+              ? "No sensitive action is pending."
+              : approval.approved
+                ? "Human approval granted. Agent may retry the exact request."
+                : "Action refused. Human approval required.";
+
+    const phaseElement = byId("gate-phase");
+    if (phaseElement) phaseElement.textContent = state.phase;
 
     byId("gate-detail").textContent =
       !pending
@@ -443,10 +456,10 @@
         const li = document.createElement("li");
 
         li.textContent =
-          `${event.at} — ${event.type}` +
-          `${event.issueId ? ` — ${event.issueId}` : ""}` +
-          `${event.requestId ? ` — request ${event.requestId}` : ""}` +
-          `${event.reason ? ` — ${event.reason}` : ""}`;
+          `${new Date(event.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · ${event.type.replaceAll("_", " ")}` +
+          `${event.issueId ? ` · ${event.issueId}` : ""}` +
+          `${event.requestId ? ` · request ${event.requestId}` : ""}` +
+          `${event.reason ? ` · ${event.reason}` : ""}`;
 
         return li;
       })
