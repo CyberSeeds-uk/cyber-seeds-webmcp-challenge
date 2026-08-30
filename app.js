@@ -8,6 +8,7 @@
     "HUMAN_APPROVED",
     "EXECUTING",
     "RESOLVED",
+    "DENIED",
     "REVOKED",
     "EXPIRED"
   ]);
@@ -60,11 +61,30 @@
     return state.issues.find((issue) => issue.id === issueId) || null;
   }
 
+  /*
+   * The request identity is deliberately small and domain-specific. The
+   * issue ID is the synthetic target; the action name prevents an approval
+   * from being treated as permission for a different operation. JSON.stringify
+   * preserves this explicit field order and gives equivalent requests the
+   * same deterministic identity without adding cryptographic theatre.
+   */
+  function canonicalRequest(issueId) {
+    return {
+      action: "synthetic_sensitive_change",
+      target: issueId
+    };
+  }
+
+  function requestFingerprint(request) {
+    return JSON.stringify(request);
+  }
+
   function isApprovalShapeValid(approval) {
     return Boolean(
       approval &&
       typeof approval.requestId === "string" &&
       typeof approval.issueId === "string" &&
+      typeof approval.requestFingerprint === "string" &&
       typeof approval.consumed === "boolean" &&
       Number.isFinite(approval.expiresAt)
     );
@@ -107,7 +127,9 @@
         ? {
             requestId: state.pending.requestId,
             issueId: state.pending.issueId,
-            requestedAt: state.pending.requestedAt
+            requestedAt: state.pending.requestedAt,
+            request: { ...state.pending.request },
+            requestFingerprint: state.pending.requestFingerprint
           }
         : null,
 
@@ -115,7 +137,13 @@
 
       expiresAt: valid
         ? new Date(state.approval.expiresAt).toISOString()
-        : null
+        : null,
+      nextAction:
+        valid
+          ? "retry_exact_request"
+          : state.phase === "REQUEST_PENDING"
+            ? "human_decision_required"
+            : "none"
     };
   }
 
@@ -132,6 +160,7 @@
       status: "refused",
       reason,
       requestId: pending?.requestId || null,
+      requestFingerprint: pending?.requestFingerprint || null,
       message:
         "Human approval is required in the visible Cyber Seeds page. Approval cannot be granted through a WebMCP tool."
     };
@@ -201,9 +230,13 @@
     }
 
     if (!state.pending) {
+      const request = canonicalRequest(issueId);
+
       state.pending = {
         requestId: makeId(),
         issueId,
+        request,
+        requestFingerprint: requestFingerprint(request),
         requestedAt: nowIso()
       };
 
@@ -229,6 +262,18 @@
       logEvent("REQUEST_MISMATCH", {
         issueId,
         requestId
+      });
+      return refuse("request_mismatch", state.pending);
+    }
+
+    const requested = canonicalRequest(issueId);
+    const requestedFingerprint = requestFingerprint(requested);
+
+    if (state.pending.requestFingerprint !== requestedFingerprint) {
+      logEvent("REQUEST_MISMATCH", {
+        issueId,
+        requestId,
+        reason: "request_fingerprint_mismatch"
       });
       return refuse("request_mismatch", state.pending);
     }
@@ -263,6 +308,7 @@
       !state.approval.consumed &&
       state.approval.requestId === requestId &&
       state.approval.issueId === issueId &&
+      state.approval.requestFingerprint === requestedFingerprint &&
       Date.now() < state.approval.expiresAt
     );
 
@@ -330,6 +376,7 @@
     state.approval = {
       requestId: state.pending.requestId,
       issueId: state.pending.issueId,
+      requestFingerprint: state.pending.requestFingerprint,
       approvedAt: nowIso(),
       expiresAt: Date.now() + APPROVAL_TTL_MS,
       consumed: false
@@ -355,6 +402,23 @@
 
     state.approval = null;
     state.phase = "REVOKED";
+
+    render();
+  }
+
+  function denyPending(event) {
+    if (!event?.isTrusted) return;
+    if (!state.pending || getApprovalState().approved) return;
+
+    logEvent("HUMAN_DENIED", {
+      issueId: state.pending.issueId,
+      requestId: state.pending.requestId,
+      requestFingerprint: state.pending.requestFingerprint
+    });
+
+    state.pending = null;
+    state.approval = null;
+    state.phase = "DENIED";
 
     render();
   }
@@ -423,6 +487,8 @@
         ? "Action completed. Authority consumed. No reusable approval remains."
         : state.phase === "REVOKED"
           ? "Human approval withdrawn. The action remains refused."
+          : state.phase === "DENIED"
+            ? "Human denied the request. The action remains refused."
           : state.phase === "EXPIRED"
             ? "Approval expired. The action remains refused."
             : !pending
@@ -437,9 +503,12 @@
     byId("gate-detail").textContent =
       !pending
         ? "Ask the agent to perform a sensitive change."
-        : `${issue?.action || "Unknown pending action"} · request ${pending.requestId}`;
+        : `${issue?.action || "Unknown pending action"} · target ${pending.issueId} · request ${pending.requestId} · identity ${pending.requestFingerprint}`;
 
     byId("approve").disabled =
+      !pending || approval.approved;
+
+    byId("deny").disabled =
       !pending || approval.approved;
 
     byId("revoke").disabled =
@@ -459,6 +528,7 @@
           `${new Date(event.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · ${event.type.replaceAll("_", " ")}` +
           `${event.issueId ? ` · ${event.issueId}` : ""}` +
           `${event.requestId ? ` · request ${event.requestId}` : ""}` +
+          `${event.requestFingerprint ? ` · identity ${event.requestFingerprint}` : ""}` +
           `${event.reason ? ` · ${event.reason}` : ""}`;
 
         return li;
@@ -477,6 +547,9 @@
 
   byId("revoke")
     .addEventListener("click", revokeApproval);
+
+  byId("deny")
+    .addEventListener("click", denyPending);
 
   byId("reset")
     .addEventListener("click", resetDemo);

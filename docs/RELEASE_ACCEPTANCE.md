@@ -10,7 +10,7 @@
 ## Automated and source checks
 
 - Clean clone contains only expected public challenge files: PASS.
-- `npm test`: 27 passed, 0 failed: PASS.
+- `npm test`: 32 passed, 0 failed: PASS.
 - `node --check app.js`, `node --check webmcp.js`, and `node --check demo-data.js`: PASS.
 - No remotes, symlinks into private repositories, secrets, real household data, or external runtime scripts: PASS.
 
@@ -33,5 +33,6 @@ The page loaded and rendered at 320 CSS px in headless Chrome with the expected 
 
 - The public-source IP firewall remains intact: only the isolated challenge repository is in scope.
 - The capsule contains synthetic household data only and has no secrets, credentials, private Cyber Seeds dependency, or new external dependency.
+- The authority lifecycle and invariants are documented in [authority-protocol.md](authority-protocol.md).
 - Live acceptance verifies this challenge capsule’s browser interaction. It does not establish physical human identity or production-grade authorisation.
 - Application behaviour is frozen for submission; remaining work is limited to Devpost/submission packaging.

@@ -6,7 +6,7 @@ WebMCP creates a better experience by making the agent’s permitted capability 
 
 Before this interaction model, an assistant would need an ambiguous handoff or a bespoke UI integration to coordinate inspection, approval, and execution. Here, the read-only tools and state-changing tool are explicit, annotated, and easy for an agent to discover. Authority is still bounded by the visible human control.
 
-Implementation is intentionally compact: static HTML/CSS/JavaScript, synthetic in-memory state, three WebMCP registrations, strict object schemas, request/action binding, expiry, revocation, single-use consumption, duplicate-registration protection, and a visible evidence stream. There is no approval WebMCP tool. The project includes a dependency-free 27-case adversarial conformance battery and documents the client-only limitations honestly.
+Implementation is intentionally compact: static HTML/CSS/JavaScript, synthetic in-memory state, three WebMCP registrations, strict object schemas, canonical request identity, exact parameter binding, expiry, denial/revocation, single-use consumption, duplicate-registration protection, and a visible evidence stream. There is no approval WebMCP tool. The project includes a dependency-free 32-case authority and adversarial conformance battery and documents the client-only limitations honestly.
 
 The central principle is: agents can request authority; they cannot manufacture it.
 

@@ -25,7 +25,7 @@ function harness({ webmcp = false, surface = "navigator" } = {}) {
     }
   });
 
-  for (const id of ["issues", "gate-state", "gate-detail", "approve", "revoke", "reset", "audit", "webmcp-status"]) {
+  for (const id of ["issues", "gate-state", "gate-detail", "approve", "deny", "revoke", "reset", "audit", "webmcp-status"]) {
     elements.set(id, makeElement(id));
   }
 
@@ -172,41 +172,84 @@ test("AUTH-014 revoked approval -> REFUSED", () => {
   assert.equal(app.performSensitiveChange({ issueId: "account-mfa", requestId: id }).reason, "human_approval_missing");
 });
 
-test("AUTH-015 programmatic untrusted approval click -> REJECTED", () => {
+test("AUTH-015 human denial clears authority and blocks execution", () => {
+  const { app, click } = harness();
+  const id = pendingFor(app);
+  click("deny", true);
+  assert.equal(app.getApprovalState().phase, "DENIED");
+  assert.equal(app.getApprovalState().pending, null);
+  assert.equal(app.performSensitiveChange({ issueId: "account-mfa", requestId: id }).status, "refused");
+});
+
+test("AUTH-016 canonical request identity binds action and target", () => {
+  const { app } = harness();
+  const id = pendingFor(app);
+  const pending = app.getApprovalState().pending;
+  assert.equal(pending.requestId, id);
+  assert.equal(JSON.stringify(pending.request), JSON.stringify({
+    action: "synthetic_sensitive_change",
+    target: "account-mfa"
+  }));
+  assert.equal(pending.requestFingerprint, JSON.stringify(pending.request));
+});
+
+test("AUTH-017 programmatic untrusted approval click -> REJECTED", () => {
   const { app, click } = harness();
   pendingFor(app);
   click("approve", false);
   assert.equal(app.getApprovalState().approved, false);
 });
 
-test("AUTH-016 unknown issue ID -> ERROR / NO MUTATION", () => {
+test("AUTH-018 untrusted denial cannot clear a pending request", () => {
+  const { app, click } = harness();
+  pendingFor(app);
+  click("deny", false);
+  assert.equal(app.getApprovalState().phase, "REQUEST_PENDING");
+  assert.notEqual(app.getApprovalState().pending, null);
+});
+
+test("AUTH-019 unknown issue ID -> ERROR / NO MUTATION", () => {
   const { app } = harness();
   const before = JSON.stringify(app.inspectHousehold());
   assert.equal(app.performSensitiveChange({ issueId: "unknown" }).reason, "unknown_issue");
   assert.equal(JSON.stringify(app.inspectHousehold()), before);
 });
 
-test("AUTH-017 malformed arguments -> NO MUTATION", () => {
+test("AUTH-020 malformed arguments -> NO MUTATION", () => {
   const { app } = harness();
   const before = JSON.stringify(app.getApprovalState());
   assert.equal(app.performSensitiveChange(null).reason, "invalid_arguments");
   assert.equal(JSON.stringify(app.getApprovalState()), before);
 });
 
-test("AUTH-018 unexpected properties -> rejected", () => {
+test("AUTH-021 unexpected properties -> rejected", () => {
   const { app } = harness();
   assert.equal(app.performSensitiveChange({ issueId: "account-mfa", approve: true }).reason, "invalid_arguments");
   assert.equal(app.getApprovalState().pending, null);
 });
 
-test("AUTH-019 read-only inspection produces no mutation", () => {
+test("AUTH-022 authorization-relevant parameter substitution is rejected", () => {
+  const { app, click } = harness();
+  const id = pendingFor(app);
+  click("approve", true);
+  const before = JSON.stringify(app.inspectHousehold());
+  const result = app.performSensitiveChange({
+    issueId: "account-mfa",
+    requestId: id,
+    target: "demo-device-02"
+  });
+  assert.equal(result.reason, "invalid_arguments");
+  assert.equal(JSON.stringify(app.inspectHousehold()), before);
+});
+
+test("AUTH-023 read-only inspection produces no mutation", () => {
   const { app } = harness();
   const before = JSON.stringify(app.getApprovalState());
   app.inspectHousehold();
   assert.equal(JSON.stringify(app.getApprovalState()), before);
 });
 
-test("AUTH-020 read-only approval inspection produces no mutation", () => {
+test("AUTH-024 read-only approval inspection produces no mutation", () => {
   const { app } = harness();
   pendingFor(app);
   const before = JSON.stringify(app.inspectHousehold());
@@ -214,7 +257,7 @@ test("AUTH-020 read-only approval inspection produces no mutation", () => {
   assert.equal(JSON.stringify(app.inspectHousehold()), before);
 });
 
-test("AUTH-021 rapid duplicate calls cannot cause duplicate execution", () => {
+test("AUTH-025 rapid duplicate calls cannot cause duplicate execution", () => {
   const { app, click } = harness();
   const id = pendingFor(app);
   for (let i = 0; i < 4; i += 1) app.performSensitiveChange({ issueId: "account-mfa" });
@@ -222,7 +265,7 @@ test("AUTH-021 rapid duplicate calls cannot cause duplicate execution", () => {
   assert.equal(app.performSensitiveChange({ issueId: "account-mfa", requestId: id }).status, "allowed");
 });
 
-test("AUTH-022 attempted request rotations cannot bypass authority", () => {
+test("AUTH-026 attempted request rotations cannot bypass authority", () => {
   const { app } = harness();
   const id = pendingFor(app);
   app.performSensitiveChange({ issueId: "account-mfa", requestId: "rotate-1" });
@@ -230,7 +273,7 @@ test("AUTH-022 attempted request rotations cannot bypass authority", () => {
   assert.equal(app.getApprovalState().pending.requestId, id);
 });
 
-test("AUTH-023 reset restores known synthetic baseline", () => {
+test("AUTH-027 reset restores known synthetic baseline", () => {
   const { app, click } = harness();
   pendingFor(app);
   click("reset", true);
@@ -239,7 +282,7 @@ test("AUTH-023 reset restores known synthetic baseline", () => {
   assert.equal(app.inspectHousehold().issues.every((issue) => issue.status === "open"), true);
 });
 
-test("AUTH-024 resolved action cannot execute twice", () => {
+test("AUTH-028 resolved action cannot execute twice", () => {
   const { app, click } = harness();
   const id = pendingFor(app);
   click("approve", true);
@@ -247,7 +290,7 @@ test("AUTH-024 resolved action cannot execute twice", () => {
   assert.equal(app.performSensitiveChange({ issueId: "account-mfa", requestId: id }).status, "no_change");
 });
 
-test("AUTH-025 no test uses real household data", () => {
+test("AUTH-029 no test uses real household data", () => {
   const { app } = harness();
   const inspection = app.inspectHousehold();
   assert.match(inspection.household.id, /^SYNTH-/);
@@ -255,7 +298,7 @@ test("AUTH-025 no test uses real household data", () => {
   assert.equal(inspection.issues.every((issue) => /^[a-z-]+$/.test(issue.id)), true);
 });
 
-test("WEBMCP-026 document.modelContext registers the same three tools and annotations", async () => {
+test("WEBMCP-030 document.modelContext registers the same three tools and annotations", async () => {
   const { tools, registration } = harness({ webmcp: true, surface: "document" });
   await registration;
   assert.deepEqual(tools.map((tool) => tool.name), ["inspect_demo_household", "get_approval_state", "perform_sensitive_change"]);
@@ -263,7 +306,16 @@ test("WEBMCP-026 document.modelContext registers the same three tools and annota
   assert.equal(tools.every((tool) => tool.inputSchema.additionalProperties === false), true);
 });
 
-test("WEBMCP-027 duplicate registration attempt does not duplicate the tool surface", async () => {
+test("WEBMCP-031 descriptions explain human authority and replay limits", async () => {
+  const { tools, registration } = harness({ webmcp: true });
+  await registration;
+  const sensitive = tools.find((tool) => tool.name === "perform_sensitive_change");
+  assert.match(sensitive.description, /fails closed/i);
+  assert.match(sensitive.description, /exact request/i);
+  assert.match(sensitive.description, /single-use/i);
+});
+
+test("WEBMCP-032 duplicate registration attempt does not duplicate the tool surface", async () => {
   const { tools, registration, sandbox } = harness({ webmcp: true });
   await registration;
   vm.runInContext(fs.readFileSync(path.join(root, "webmcp.js"), "utf8"), sandbox, { filename: "webmcp.js" });

@@ -67,7 +67,7 @@
     title: "Get approval state",
 
     description:
-      "Read whether a sensitive synthetic action is pending and whether the human approved that exact request.",
+      "Read the current synthetic human-authority state. This tool never grants authority; it reports whether an exact request is pending, approved, denied, expired, revoked, resolved, or has no reusable authority.",
 
     inputSchema: {
       type: "object",
@@ -95,7 +95,7 @@
     title: "Perform sensitive change",
 
     description:
-      "Attempt a synthetic sensitive household change. The first attempt fails closed and creates an action-scoped approval request. The human must approve it in the visible page before the agent retries.",
+      "Attempt one exact synthetic sensitive household change. The first attempt always fails closed and creates a request bound to its target. Execution requires human approval of that exact request in the visible page; successful authority is single-use and cannot be replayed.",
 
     inputSchema: {
       type: "object",

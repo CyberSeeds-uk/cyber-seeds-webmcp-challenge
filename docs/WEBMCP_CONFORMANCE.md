@@ -6,7 +6,7 @@ The capsule exposes exactly three tools:
 |---|---|---:|---|
 | `inspect_demo_household` | `{}` | `true` | Reads synthetic issue state. |
 | `get_approval_state` | `{}` | `true` | Reads pending/approval state. |
-| `perform_sensitive_change` | `issueId`, optional `requestId` | `false` | Attempts a bounded synthetic state change. |
+| `perform_sensitive_change` | `issueId`, optional `requestId` | `false` | Attempts a bounded synthetic state change; exact human authority is required and single-use. |
 
 All schemas are objects with `additionalProperties: false`. The sensitive issue enum is limited to `account-mfa` and `router-update`. No tool grants approval, bypasses the gate, or force-executes an action. The human approval path exists only as a visible DOM control and rejects untrusted events.
 
