@@ -2,10 +2,11 @@
 
 ## Candidate
 
-- Application source baseline: `8c041c7`
+- Application source baseline: `a76135d` (human-authority hardening commit)
 - Recorded: 2026-08-29
 - Public deployment: https://cyber-seeds-webmcp-challenge.pages.dev/
-- Live ChatGPT acceptance: PASS; see [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md)
+- Historical live ChatGPT acceptance: PASS for the pre-hardening release only; see [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md).
+- Hardened public static deployment: VERIFIED; fresh ChatGPT acceptance remains pending because the required genuine WebMCP session is unavailable in this environment.
 
 ## Automated and source checks
 
@@ -16,7 +17,7 @@
 
 ## WebMCP evidence
 
-The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. A genuine ChatGPT built-in browser session discovered exactly the three public Site Tools, completed the fail-closed request, visible human approval, exact retry, and single-use replay checks documented in [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md).
+The source and Node conformance harness verify exactly three registrations, both compatibility surfaces, annotations, schemas, and duplicate-registration protection. The deployed hardened static assets match the local commit. Historical genuine ChatGPT discovery and lifecycle evidence is preserved in [CHATGPT_SITE_TOOLS_ACCEPTANCE.md](CHATGPT_SITE_TOOLS_ACCEPTANCE.md) but is not relabeled as evidence for the hardened commit.
 
 ## Visual evidence
 
@@ -35,4 +36,4 @@ The page loaded and rendered at 320 CSS px in headless Chrome with the expected 
 - The capsule contains synthetic household data only and has no secrets, credentials, private Cyber Seeds dependency, or new external dependency.
 - The authority lifecycle and invariants are documented in [authority-protocol.md](authority-protocol.md).
 - Live acceptance verifies this challenge capsule’s browser interaction. It does not establish physical human identity or production-grade authorisation.
-- Application behaviour is frozen for submission; remaining work is limited to Devpost/submission packaging.
+- The hardened implementation is deployed and documented; fresh ChatGPT/WebMCP lifecycle acceptance remains an explicit external/manual step.
