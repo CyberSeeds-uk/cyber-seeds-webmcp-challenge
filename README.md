@@ -6,6 +6,26 @@ The demo explores a simple question: what should happen when an AI agent is tech
 
 Cyber Seeds is a deliberately isolated, synthetic browser capsule. WebMCP gives the agent a structured interface to the live page; the visible page remains the authority boundary for consequential change.
 
+## Live competition acceptance
+
+The public deployment has been exercised through genuine WebMCP agent interaction against both sides of the authority boundary.
+
+- **Adversarial agent-authority test:** [LIVE_AGENT_AUTHORITY_PATH_ACCEPTANCE.md](docs/LIVE_AGENT_AUTHORITY_PATH_ACCEPTANCE.md)
+  - agent could target the visible approval control;
+  - agent-originated UI approval was rejected as `untrusted_ui_event`;
+  - no authority was created;
+  - the consequential action remained blocked.
+
+- **Positive human-authority lifecycle:** [LIVE_HUMAN_AUTHORITY_LIFECYCLE_ACCEPTANCE.md](docs/LIVE_HUMAN_AUTHORITY_LIFECYCLE_ACCEPTANCE.md)
+  - sensitive action initially failed closed with `human_approval_missing`;
+  - genuine human approval authorised only the exact pending request;
+  - the action executed exactly once;
+  - authority was consumed;
+  - replay did not execute again;
+  - cross-target authority reuse failed.
+
+**Core proposition: Capability is not authority. Interaction is not consent.**
+
 ## What WebMCP exposes
 
 The three exposed WebMCP tools are:
@@ -52,6 +72,16 @@ Use `npm run check` for JavaScript syntax validation.
 The project is static HTML/CSS/JavaScript with synthetic in-memory state. `webmcp.js` registers the stable tool surface; `app.js` owns canonical requests, authority validation, state transitions, UI rendering, and the live event ledger; `demo-data.js` contains the synthetic baseline; `tests/conformance.test.js` exercises the authority protocol.
 
 The implementation uses stable tool registration rather than dynamic tool exposure because the supported WebMCP surface does not require brittle registration churn. Authority state is returned through deterministic structured JSON results.
+
+### WebMCP API surface
+
+The canonical browser API used by this project is:
+
+`document.modelContext.registerTool(...)`
+
+The implementation resolves `document.modelContext` first and retains `navigator.modelContext` only as a compatibility fallback for previously verified WebMCP-capable runtimes.
+
+The current browser WebMCP API therefore remains the primary registration surface; the fallback does not change the exposed tool semantics or authority model.
 
 ## Compatibility and boundaries
 

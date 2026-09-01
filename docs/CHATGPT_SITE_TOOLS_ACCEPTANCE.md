@@ -1,5 +1,7 @@
 # Historical live ChatGPT Site Tools acceptance
 
+
+> **Current status — 2026-09-01:** The pending hardened-implementation acceptance referenced later in this historical record has now been completed. See [Live Agent Authority-Path Acceptance](LIVE_AGENT_AUTHORITY_PATH_ACCEPTANCE.md) and [Live Human Authority Lifecycle Acceptance](LIVE_HUMAN_AUTHORITY_LIFECYCLE_ACCEPTANCE.md). The historical observations below are intentionally preserved unchanged.
 This record describes the pre-hardening public acceptance. It is preserved as historical evidence and does not claim acceptance of the later human-authority hardening commit. New closure evidence must be appended with its deployed commit SHA and timestamp.
 
 Recorded: 2026-08-29

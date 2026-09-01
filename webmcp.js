@@ -9,6 +9,14 @@
 
   if (existingRegistration) return;
 
+  /*
+   * Canonical WebMCP API:
+   *   document.modelContext.registerTool(...)
+   *
+   * document.modelContext is the primary registration surface.
+   * navigator.modelContext is retained only as a compatibility fallback
+   * for previously verified WebMCP-capable runtimes.
+   */
   const modelContext =
     document.modelContext ??
     navigator.modelContext ??

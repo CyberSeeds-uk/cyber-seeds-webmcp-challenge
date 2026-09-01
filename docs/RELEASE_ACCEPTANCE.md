@@ -1,5 +1,21 @@
 # Release acceptance record
 
+## Current live acceptance status — 2026-09-01
+
+**Status: LIVE ACCEPTANCE COMPLETE**
+
+The earlier sections of this document preserve historical release-state evidence and may refer to fresh ChatGPT/WebMCP acceptance as pending. That requirement has since been completed.
+
+Two complementary live WebMCP acceptance runs against the public deployment are now recorded:
+
+1. [Live Agent Authority-Path Acceptance](LIVE_AGENT_AUTHORITY_PATH_ACCEPTANCE.md) — an agent-originated interaction with the visible approval control was rejected as `untrusted_ui_event`; no human authority was manufactured and the consequential action remained blocked.
+
+2. [Live Human Authority Lifecycle Acceptance](LIVE_HUMAN_AUTHORITY_LIFECYCLE_ACCEPTANCE.md) — genuine human approval authorised the exact pending request once; authority was consumed after execution; replay did not execute again; cross-target authority reuse failed.
+
+Together these tests provide current competition-grade evidence for both the negative and positive authority paths.
+
+The project remains a synthetic client-side demonstration and does not claim production identity assurance, cryptographic proof of human presence, or server-side enforcement.
+
 ## Candidate
 
 - Application source baseline: `a76135d` (human-authority hardening commit)
